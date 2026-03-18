@@ -6,27 +6,32 @@ use iced_layershell::{
 };
 use iced_moving_picture::gif;
 use std::env::args;
-use std::{path::PathBuf};
+use std::path::PathBuf;
 
 fn main() {
     // TODO: Use clap to get the path and size of the GIF.
     let args = args().nth(1).expect("usage: wayland-gif <gif path>");
-    
-    application(move || App::new(args.clone()), App::title, App::update, App::view)
-        .style(App::style)
-        .settings(Settings {
-            layer_settings: LayerShellSettings {
-                size: Some((0, 70)),
-                exclusive_zone: 0,
-                keyboard_interactivity: KeyboardInteractivity::None,
-                anchor: Anchor::Bottom | Anchor::Left | Anchor::Right,
-                start_mode: StartMode::Active,
-                ..Default::default()
-            },
+
+    application(
+        move || App::new(args.clone()),
+        App::title,
+        App::update,
+        App::view,
+    )
+    .style(App::style)
+    .settings(Settings {
+        layer_settings: LayerShellSettings {
+            size: Some((0, 70)),
+            exclusive_zone: 0,
+            keyboard_interactivity: KeyboardInteractivity::None,
+            anchor: Anchor::Bottom | Anchor::Left | Anchor::Right,
+            start_mode: StartMode::Active,
             ..Default::default()
-        })
-        .run()
-        .unwrap();
+        },
+        ..Default::default()
+    })
+    .run()
+    .unwrap();
 }
 
 #[to_layer_message]
@@ -39,7 +44,7 @@ struct App {
     frames: Option<gif::Frames>,
 }
 impl App {
-    fn new(path:String) -> (Self, Task<Message>) {
+    fn new(path: String) -> (Self, Task<Message>) {
         let path = PathBuf::from(path);
         if path.exists() {
             eprintln!("path");
