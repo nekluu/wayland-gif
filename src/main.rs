@@ -23,7 +23,7 @@ fn main() {
         layer_settings: LayerShellSettings {
             size: Some((0, 70)),
             exclusive_zone: 0,
-            keyboard_interactivity: KeyboardInteractivity::None,
+            events_transparent: true,
             anchor: Anchor::Bottom | Anchor::Left | Anchor::Right,
             start_mode: StartMode::Active,
             ..Default::default()
