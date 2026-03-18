@@ -1,11 +1,23 @@
 use std::path::PathBuf;
 
 use iced::{Color, Element, Task, widget::column};
-use iced_layershell::to_layer_message;
+use iced_layershell::{Settings, application, reexport::Anchor, settings::LayerShellSettings, to_layer_message};
 use iced_moving_picture::gif;
 
 fn main() {
-    println!("Hello, world!");
+    application(App::default, App::title, App::update, App::view)
+        .style(App::style)
+        .settings(Settings {
+            layer_settings: LayerShellSettings {
+                size: Some((0, 400)),
+                exclusive_zone: 400,
+                anchor: Anchor::Bottom | Anchor::Left | Anchor::Right,
+                start_mode: iced_layershell::settings::StartMode::Active,
+                ..Default::default()
+            },
+            ..Default::default()
+        })
+        .run().unwrap();
 }
 
 #[to_layer_message]
@@ -25,7 +37,7 @@ impl App {
             gif::Frames::load_from_path(path).map(Message::Loaded),
         )
     }
-    fn title(&self) -> String {
+    fn title() -> String {
         "Wayland GIF".to_owned()
     }
     fn update(&mut self, message: Message) -> Task<Message>{
