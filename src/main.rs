@@ -1,7 +1,9 @@
 use std::{env, path::PathBuf};
 
 use iced::{Color, Element, Task, widget::column};
-use iced_layershell::{Settings, application, reexport::Anchor, settings::LayerShellSettings, to_layer_message};
+use iced_layershell::{
+    Settings, application, reexport::Anchor, settings::LayerShellSettings, to_layer_message,
+};
 use iced_moving_picture::gif;
 
 fn main() {
@@ -18,20 +20,21 @@ fn main() {
             },
             ..Default::default()
         })
-        .run().unwrap();
+        .run()
+        .unwrap();
 }
 
 #[to_layer_message]
 #[derive(Debug, Clone)]
 enum Message {
-    Loaded(Result<gif::Frames,gif::Error>),
+    Loaded(Result<gif::Frames, gif::Error>),
 }
-#[derive(Debug,Default)]
+#[derive(Debug, Default)]
 struct App {
     frames: Option<gif::Frames>,
-}  
+}
 impl App {
-    fn new() -> (Self,Task<Message>) {
+    fn new() -> (Self, Task<Message>) {
         let path = PathBuf::from(env::var("HOME").unwrap()).join("pro/gif_sys/marija-nun.gif");
         if path.exists() {
             eprintln!("path");
@@ -46,16 +49,16 @@ impl App {
     fn title() -> String {
         "Wayland GIF".to_owned()
     }
-    fn update(&mut self, message: Message) -> Task<Message>{
+    fn update(&mut self, message: Message) -> Task<Message> {
         match message {
             Message::Loaded(result) => {
                 self.frames = result.ok();
                 Task::none()
             }
-            _ => unreachable!()
+            _ => unreachable!(),
         }
     }
-    fn view(&self) -> Element<'_,Message> {
+    fn view(&self) -> Element<'_, Message> {
         match &self.frames {
             Some(frames) => {
                 eprintln!("gif loaded");
@@ -74,4 +77,4 @@ impl App {
             text_color: theme.palette().text,
         }
     }
-    }
+}
