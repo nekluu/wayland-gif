@@ -1,5 +1,4 @@
 use iced::{Color, Element, Task, widget::column};
-use iced_layershell::reexport::KeyboardInteractivity;
 use iced_layershell::settings::StartMode;
 use iced_layershell::{
     Settings, application, reexport::Anchor, settings::LayerShellSettings, to_layer_message,
