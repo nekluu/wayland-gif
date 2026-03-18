@@ -5,10 +5,14 @@ use iced_layershell::{
     Settings, application, reexport::Anchor, settings::LayerShellSettings, to_layer_message,
 };
 use iced_moving_picture::gif;
-use std::{env, path::PathBuf};
+use std::env::args;
+use std::{path::PathBuf};
 
 fn main() {
-    application(App::new, App::title, App::update, App::view)
+    // TODO: Use clap to get the path and size of the GIF.
+    let args = args().nth(1).expect("usage: wayland-gif <gif path>");
+    
+    application(move || App::new(args.clone()), App::title, App::update, App::view)
         .style(App::style)
         .settings(Settings {
             layer_settings: LayerShellSettings {
@@ -35,8 +39,8 @@ struct App {
     frames: Option<gif::Frames>,
 }
 impl App {
-    fn new() -> (Self, Task<Message>) {
-        let path = PathBuf::from(env::var("HOME").unwrap()).join("pro/gif_sys/marija-nun.gif");
+    fn new(path:String) -> (Self, Task<Message>) {
+        let path = PathBuf::from(path);
         if path.exists() {
             eprintln!("path");
         } else {
